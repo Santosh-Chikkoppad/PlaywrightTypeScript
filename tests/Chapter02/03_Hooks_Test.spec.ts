@@ -1,0 +1,69 @@
+import { test, expect } from '@playwright/test';
+
+test.beforeAll(async() =>{  // run only one time before test execution
+    console.log('Running beforeAll tests..')
+})
+
+test.afterAll(async() =>{  //execute only one after test execution
+    console.log('Running afterAll tests..')
+})
+
+test.beforeEach(async({page}) => {
+    await page.goto('https://www.flipkart.com/');
+    console.log('Running beforeEach tests')
+})
+
+test.afterEach(async() => {
+    console.log('Running afterEach tests')
+})
+// Login test
+test('Flipkart E2E Test1', async ({ page }) => {
+    console.log('Test 1 Execution Started')
+  await page.goto('https://www.flipkart.com/');
+  //console.log('Logged in');
+
+// Search product test
+await test.step('Search for product', async () => {
+  await page.getByRole('textbox', { name: 'Search for Products, Brands' }).fill('laptops');
+  await page.getByRole('textbox', { name: 'Search for Products, Brands' }).press('Enter');
+  //console.log('Search executed');
+});
+
+// Filtering test
+await test.step('Apply filters', async () => {
+  await page.getByText('Core i5', { exact: true }).click();
+  await page.waitForTimeout(2000);
+  const priceDropdown = page.locator('select.Gn\\+jFg').first();
+  await priceDropdown.selectOption({ index: 3 });
+  const selectedValue = await priceDropdown.inputValue();
+  //console.log('Selected Price:', selectedValue);
+  await expect(priceDropdown).toHaveValue('50000');  
+ // console.log(' Filters applied');
+})  
+});
+
+test('Flipkart E2E Test2', async ({ page }) => {
+    console.log('Test 2 Execution Started')
+  //await page.goto('https://www.flipkart.com/');
+
+
+// Search product test
+await test.step('Search for product', async () => {
+  await page.getByRole('textbox', { name: 'Search for Products, Brands' }).fill('laptops');
+  await page.getByRole('textbox', { name: 'Search for Products, Brands' }).press('Enter');
+ // console.log('Search executed');
+});
+
+// Filtering test
+await test.step('Apply filters', async () => {
+  await page.getByText('Core i5', { exact: true }).click();
+  await page.waitForTimeout(2000);
+  const priceDropdown = page.locator('select.Gn\\+jFg').first();
+  await priceDropdown.selectOption({ index: 3 });
+  const selectedValue = await priceDropdown.inputValue();
+ // console.log('Selected Price:', selectedValue);
+  await expect(priceDropdown).toHaveValue('50000');  
+//  console.log(' Filters applied');
+})  
+});
+
